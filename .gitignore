@@ -1,0 +1,13 @@
+# Compiled source
+*.o
+*.so
+tests
+
+# Output directories
+doc/
+obj/
+test/obj/
+
+# OS-generated files
+*.swp
+.DS_Store
