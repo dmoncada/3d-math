@@ -18,28 +18,36 @@ namespace Vector3Tests
     // virtual void TearDown() {}
   };
 
-  TEST_F(Vector3Test, CrossProductTest)
+  TEST_F(Vector3Test, CrossProductIsZeroIfVectorsAreParallel)
   {
-    // Assert the result is the zero vector if the inputs are parallel.
-
     v = Vector3(1.0f, 2.0f, 3.0f);
     w = Vector3(2.0f, 4.0f, 6.0f); // Parallel to the above.
 
     EXPECT_EQ(Vector3::cross(v, w), Vector3::zero())
       << "The cross product of two parallel vectors should be a zero vector.";
-
-    // Test the result is perpendicular to the inputs if they're not parallel.
-
-    u = Vector3::cross(v, w);
-    bool result1 = IsAlmostEqual(Vector3::dot(v, u), 0.0f);
-    bool result2 = IsAlmostEqual(Vector3::dot(w, u), 0.0f);
-
-    EXPECT_TRUE(result1 && result2)
-      << "The cross product of two non-parallel vectors should be "
-      << "perpendicular to the inputs.";
   }
 
-  TEST_F(Vector3Test, DotProductTest)
+  TEST_F(Vector3Test, DotProductIsPositiveIfAngleIsBelowNinety)
+  {
+    v = Vector3(1.0f, 2.0f, 3.0f);
+    w = Vector3(3.0f, 1.0f, 2.0f);
+
+    EXPECT_TRUE(Vector3::angle(v, w) < 90.0f && Vector3::dot(v, w) > 0.0f)
+      << "When the angle between two vectors is less that ninety, the dot "
+      << "product should be positive.";
+  }
+
+  TEST_F(Vector3Test, DotProductIsNegativeIfAngleIsAboveNinety)
+  {
+    v = Vector3(1.0f, 2.0f, 3.0f);
+    w = Vector3(-2.0f, -1.0f, -3.0f);
+
+    EXPECT_TRUE(Vector3::angle(v, w) > 90.0f && Vector3::dot(v, w) < 0.0f)
+      << "When the angle between two vectors is greater that ninety, the dot "
+      << "product should be negative.";
+  }
+
+  TEST_F(Vector3Test, DotProductIsZeroIfVectorsArePerpendicular)
   {
     v = Vector3(1.0f, 2.0f, 3.0f);
     w = Vector3(0.0f, 3.0f, -2.0f); // Perpendicular to the above.
@@ -50,8 +58,6 @@ namespace Vector3Tests
 
   TEST_F(Vector3Test, NormalizedVectorMagnitudeIsOne)
   {
-    // Assert the magnitude of a normalized vector is one.
-
     v = Vector3(1.0f, 2.0f, 3.0f);
     w = Vector3::normalize(v);
 
@@ -61,9 +67,6 @@ namespace Vector3Tests
 
   TEST_F(Vector3Test, MagSquaredIsSquareMag)
   {
-    // Assert the square of the magnitude operation for a vector equals its
-    // square magnitude operation.
-
     v = Vector3(1.0f, 2.0f, 3.0f);
     float mag_squared = std::powf(v.magnitude(), 2.0f);
 
