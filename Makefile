@@ -34,16 +34,16 @@ CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -Iinclude
 # Flags passed to the linker.
 LDFLAGS  += -lgtest
 
-.PHONY: all clean doc help test
+.PHONY: all clean doc help tags test
 
 # #######
 # Targets
 # #######
 
-all: doc test
+all: doc tags test
 
 clean:
-	@rm -fr $(DOC_DIR) $(OBJ_DIR) $(TESTS_OBJS_DIR) $(TESTS)
+	@rm -fr $(DOC_DIR) $(OBJ_DIR) $(TESTS_OBJS_DIR) tags $(TESTS)
 
 doc:
 	@doxygen Doxyfile
@@ -55,8 +55,13 @@ help:
 	@echo ' clean    - Removes all generated files.'
 	@echo ' *doc     - Builds the documentation.'
 	@echo ' help     - Show this help message.'
+	@echo ' *tags    - Builds tags for vim.'
 	@echo ' *test    - Builds the test suite.'
 	@echo ' print-%  - Prints the value of variable %.'
+
+tags:
+	find include -type f -and -iname '*.h' | xargs ctags
+	find src -type f -and -iname '*.cpp' | xargs ctags -a
 
 test: $(TESTS)
 

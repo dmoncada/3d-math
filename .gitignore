@@ -1,13 +1,14 @@
-# Compiled source
+# Output files.
 *.o
 *.so
+tags
 tests
 
-# Output directories
+# Output directories.
 doc/
 obj/
 test/obj/
 
-# OS-generated files
+# OS-generated files.
 *.swp
 .DS_Store
