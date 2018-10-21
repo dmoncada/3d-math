@@ -4,13 +4,9 @@
 
 #pragma once
 
-#include <cmath>
-#include <iomanip>
-#include <iostream>
 #include "MathObject.h"
 
 /// @namespace Math3D
-/// @brief A namespace that includes basic mathematical objects.
 namespace Math3D {
 
   /// @class Vector3
@@ -31,9 +27,9 @@ namespace Math3D {
     }
 
   public:
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+    float x {};
+    float y {};
+    float z {};
 
     /// @brief Computes the angle between two vectors.
     /// @return The angle between the inputs in degrees, which is in the range
@@ -58,9 +54,20 @@ namespace Math3D {
     /// @return The Vector3 resulting from the cross product of the two inputs.
     static Vector3 cross(const Vector3& v, const Vector3& w)
     {
-      return Vector3(v.y * w.z - v.z * w.y,
-                     v.z * w.x - v.x * w.z,
-                     v.x * w.y - v.y * w.x);
+      return Vector3(
+          v.y * w.z - v.z * w.y,
+          v.z * w.x - v.x * w.z,
+          v.x * w.y - v.y * w.x
+      );
+    }
+
+    /// @brief Computes the distance between two vectors.
+    /// @param v The first Vector3.
+    /// @param w The second Vector3.
+    /// @return The distance between the inputs.
+    static float distance(const Vector3& v, const Vector3& w)
+    {
+      return (v - w).magnitude();
     }
 
     /// @brief Computes the dot product of two vectors.

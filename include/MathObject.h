@@ -5,10 +5,10 @@
 #pragma once
 
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 
 /// @namespace Math3D
-/// @brief A namespace that includes basic mathematical objects.
 namespace Math3D {
 
   /// @brief The pi mathematical constant.
@@ -24,7 +24,7 @@ namespace Math3D {
   /// @brief Helper function to assert if two floats are reasonably close.
   /// @returns @c true if the inputs are within epsilon from each other, @c
   /// false otherwise.
-  inline bool IsAlmostEqual(const float a, const float b, float e = 0.001f)
+  inline bool is_almost_equal(const float a, const float b, float e = 0.001f)
   {
     return std::fabsf(a - b) < e;
   }
@@ -34,6 +34,6 @@ namespace Math3D {
   class MathObject {
 
   protected:
-    virtual std::ostream& to_string(std::ostream& os) const = 0;
+    virtual std::ostream& to_string(std::ostream&) const = 0;
   };
 }

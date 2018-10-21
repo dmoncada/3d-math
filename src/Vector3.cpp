@@ -1,5 +1,6 @@
 #include "Vector3.h"
 
+/// @namespace Math3D
 namespace Math3D
 {
   /// @brief Copy constructor for Vector3.
@@ -110,9 +111,9 @@ namespace Math3D
   /// @brief Overload for the equality comparison operator.
   bool Vector3::operator==(const Vector3& other) const
   {
-    return IsAlmostEqual(x, other.x) &&
-           IsAlmostEqual(y, other.y) &&
-           IsAlmostEqual(z, other.z);
+    return is_almost_equal(x, other.x) &&
+           is_almost_equal(y, other.y) &&
+           is_almost_equal(z, other.z);
   }
 
   /// @brief Overload for the stream insertion operator.

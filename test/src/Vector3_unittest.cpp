@@ -3,16 +3,14 @@
 #include "Vector3.h"
 
 using Math3D::Vector3;
-using Math3D::IsAlmostEqual;
+using Math3D::is_almost_equal;
 
 namespace Vector3Tests
 {
   class Vector3Test : public testing::Test
   {
   protected:
-    Vector3 u;
-    Vector3 v;
-    Vector3 w;
+    Vector3 u, v, w;
 
     // virtual void SetUp() {}
     // virtual void TearDown() {}
@@ -52,7 +50,7 @@ namespace Vector3Tests
     v = Vector3(1.0f, 2.0f, 3.0f);
     w = Vector3(0.0f, 3.0f, -2.0f); // Perpendicular to the above.
 
-    EXPECT_TRUE(IsAlmostEqual(Vector3::dot(v, w), 0.0f))
+    EXPECT_TRUE(is_almost_equal(Vector3::dot(v, w), 0.0f))
       << "The dot product of two perpendicular vectors should be zero.";
   }
 
@@ -61,7 +59,7 @@ namespace Vector3Tests
     v = Vector3(1.0f, 2.0f, 3.0f);
     w = Vector3::normalize(v);
 
-    EXPECT_TRUE(IsAlmostEqual(w.magnitude(), 1.0f))
+    EXPECT_TRUE(is_almost_equal(w.magnitude(), 1.0f))
       << "The magnitude of a normalized vector should be one";
   }
 
@@ -70,7 +68,7 @@ namespace Vector3Tests
     v = Vector3(1.0f, 2.0f, 3.0f);
     float mag_squared = std::powf(v.magnitude(), 2.0f);
 
-    EXPECT_TRUE(IsAlmostEqual(mag_squared, v.sqr_magnitude()))
+    EXPECT_TRUE(is_almost_equal(mag_squared, v.sqr_magnitude()))
       << "Squaring Vector3::magnitude() should yield the same result as "
       << "Vector3::sqr_magnitude()";
   }
