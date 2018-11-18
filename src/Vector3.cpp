@@ -1,8 +1,8 @@
 #include "Vector3.h"
 
 /// @namespace Math3D
-namespace Math3D
-{
+namespace Math3D {
+
   /// @brief Copy constructor for Vector3.
   Vector3::Vector3(const Vector3& v) : Vector3(v.x, v.y, v.z) {}
 
@@ -14,6 +14,16 @@ namespace Math3D
   float Vector3::magnitude() const
   {
     return std::sqrtf(sqr_magnitude());
+  }
+
+  /// @brief Returns this vector as a unit vector.
+  /// @return A Vector3 with a magnitude of one that points in the same
+  /// direction as this.
+  Vector3 Vector3::normalized() const
+  {
+    Vector3 v = *this;
+    Vector3::normalize(v);
+    return v;
   }
 
   /// @brief The squared magnitude of the vector.
@@ -116,9 +126,12 @@ namespace Math3D
            is_almost_equal(z, other.z);
   }
 
-  /// @brief Overload for the stream insertion operator.
-  std::ostream& operator<<(std::ostream& os, const Vector3& v)
+  /// @brief Overload for the to_string() member function in the base class.
+  std::ostream& Vector3::to_string(std::ostream& os) const
   {
-    return v.to_string(os);
+    return os << "("
+      << std::setw(1) << x << ", "
+      << std::setw(1) << y << ", "
+      << std::setw(1) << z << ")";
   }
 }

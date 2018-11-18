@@ -17,19 +17,8 @@ namespace Math3D {
   /// coordinate transforms.
   class Vector3 : public MathObject {
 
-  protected:
-    std::ostream& to_string(std::ostream& os) const override
-    {
-      return os << "("
-        << std::setw(1) << x << ", "
-        << std::setw(1) << y << ", "
-        << std::setw(1) << z << ")";
-    }
-
   public:
-    float x {};
-    float y {};
-    float z {};
+    float x, y, z;
 
     /// @brief Computes the angle between two vectors.
     /// @return The angle between the inputs in degrees, which is in the range
@@ -55,9 +44,9 @@ namespace Math3D {
     static Vector3 cross(const Vector3& v, const Vector3& w)
     {
       return Vector3(
-          v.y * w.z - v.z * w.y,
-          v.z * w.x - v.x * w.z,
-          v.x * w.y - v.y * w.x
+        v.y * w.z - v.z * w.y,
+        v.z * w.x - v.x * w.z,
+        v.x * w.y - v.y * w.x
       );
     }
 
@@ -89,13 +78,12 @@ namespace Math3D {
       return v.x * w.x + v.y * w.y + v.z * w.z;
     }
 
-    /// @brief Converts an arbitrary vector into a unit vector.
-    /// @param v The Vector3 to convert.
-    /// @return A Vector3 with a magnitude of one that points in the same
-    /// direction as the input.
-    static Vector3 normalize(const Vector3& v)
+    /// @brief Turns an arbitrary vector into a unit vector.
+    /// @param v The Vector3 to normalize.
+    static Vector3& normalize(Vector3& v)
     {
-      return v / v.magnitude();
+      v /= v.magnitude();
+      return v;
     }
 
     /// @brief Computes the projection of a vector onto another.
@@ -112,7 +100,7 @@ namespace Math3D {
       return v - project(v, w);
     }
 
-    /// @brief Returns a zero vector.
+    /// @brief Returns the zero vector.
     /// @return A Vector3 whose every component is zero.
     static Vector3 zero()
     {
@@ -124,11 +112,9 @@ namespace Math3D {
     Vector3(const Vector3&);
     Vector3(float, float, float);
 
-    // Destructor.
-    ~Vector3() = default;
-
     // Member functions.
     float magnitude() const;
+    Vector3 normalized() const;
     float sqr_magnitude() const;
 
     // Arithmetic operators overloads.
@@ -150,7 +136,7 @@ namespace Math3D {
     // Comparison operators overloads.
     bool operator==(const Vector3&) const;
 
-    // Friend functions.
-    friend std::ostream& operator<<(std::ostream& os, const Vector3& v);
+    // to_string() overload.
+    std::ostream& to_string(std::ostream& os) const override;
   };
 }

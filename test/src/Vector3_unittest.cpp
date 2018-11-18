@@ -5,10 +5,10 @@
 using Math3D::Vector3;
 using Math3D::is_almost_equal;
 
-namespace Vector3Tests
-{
-  class Vector3Test : public testing::Test
-  {
+namespace Vector3Tests {
+
+  class Vector3Test : public testing::Test {
+
   protected:
     Vector3 u, v, w;
 
@@ -57,9 +57,8 @@ namespace Vector3Tests
   TEST_F(Vector3Test, NormalizedVectorMagnitudeIsOne)
   {
     v = Vector3(1.0f, 2.0f, 3.0f);
-    w = Vector3::normalize(v);
 
-    EXPECT_TRUE(is_almost_equal(w.magnitude(), 1.0f))
+    EXPECT_TRUE(is_almost_equal(v.normalized().magnitude(), 1.0f))
       << "The magnitude of a normalized vector should be one";
   }
 

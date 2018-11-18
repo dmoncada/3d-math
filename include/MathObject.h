@@ -33,7 +33,15 @@ namespace Math3D {
   /// @brief Interface for mathematical objects.
   class MathObject {
 
-  protected:
+  public:
+    virtual ~MathObject() = default;
     virtual std::ostream& to_string(std::ostream&) const = 0;
   };
+
+  /// @brief Override for the output stream insertion operator, for classes
+  /// deriving from MathObject.
+  inline std::ostream& operator<<(std::ostream& os, MathObject& obj)
+  {
+    return obj.to_string(os);
+  }
 }
