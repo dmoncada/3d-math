@@ -9,8 +9,8 @@ namespace Math3D {
   /// @brief Constructor for Vector3.
   Vector3::Vector3(float x, float y, float z) : x {x}, y {y}, z {z} {}
 
-  /// @brief The magnitude of the vector.
-  /// @return The length of the line segment represented by the vector.
+  /// @brief The magnitude of this vector.
+  /// @return The length of the line segment represented by this vector.
   float Vector3::magnitude() const
   {
     return std::sqrtf(sqr_magnitude());
@@ -26,14 +26,14 @@ namespace Math3D {
     return v;
   }
 
-  /// @brief The squared magnitude of the vector.
+  /// @brief The squared magnitude of this vector.
   ///
   /// Computing the squared magnitude of a vector is cheaper than computing its
   /// magnitude; when doing simple distance comparisons, it is usually faster to
   /// compare squared magnitudes against the squares of distances, since the
   /// comparison will yield the same result.
   ///
-  /// @return The square of the magnitude of the vector.
+  /// @return The square of the magnitude of this vector.
   float Vector3::sqr_magnitude() const
   {
     return x * x + y * y + z * z;

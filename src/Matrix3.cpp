@@ -20,7 +20,16 @@ namespace Math3D {
   Matrix3::Matrix3(const Vector3& u, const Vector3& v, const Vector3& w)
     : m { u.x, v.x, w.x, u.y, v.y, w.y, u.z, v.z, w.z } {}
 
-  // TODO: add doc.
+  /// @brief The determinant of this matrix.
+  ///
+  /// The determinant can be thought of as a sort of magnitude for the matrix.
+  /// It can be positive of negative depending on the orientation of the set of
+  /// vectors consisting of the n rows (or columns) of the matrix.
+  ///
+  /// The determinant is computed using _expansion by minors_, where _minor_ is
+  /// the determinant of a submatrix that excludes a row and a column.
+  ///
+  /// @return The determinant of this matrix.
   float Matrix3::determinant() const
   {
     return (*this)(0, 0) * ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) +
@@ -28,7 +37,14 @@ namespace Math3D {
            (*this)(0, 2) * ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
   }
 
-  // TODO: add doc.
+  /// @brief The inverse of this matrix.
+  ///
+  /// The inverse is found using _Gauss-Jordan elimination_, in which elementary
+  /// row operations are successively applied to the matrix until it is
+  /// transformed into the identity matrix. A matrix has an inverse if and only
+  /// if its determinant is not zero.
+  ///
+  /// @return The inverse of this matrix as a new Matrix3.
   Matrix3 Matrix3::inverse() const
   {
     const Vector3 a = (*this)[0];
@@ -39,18 +55,19 @@ namespace Math3D {
     Vector3 v = Vector3::cross(c, a);
     Vector3 w = Vector3::cross(a, b);
 
-    // TODO: Throw if the dot product of w and c is zero.
-    float invdet = 1.0f / Vector3::dot(w, c);
+    float det = Vector3::dot(w, c);
 
-    return Matrix3(
-      u.x * invdet, u.y * invdet, u.z * invdet,
-      v.x * invdet, v.y * invdet, v.z * invdet,
-      w.x * invdet, w.y * invdet, w.z * invdet
-    );
+    if (is_almost_equal(det, 0.0f, 0.000001))
+    {
+      throw "The determinant of the matrix is zero.";
+    }
+
+    u /= det;
+    v /= det;
+    w /= det;
+
+    return Matrix3(u.x, u.y, u.z, v.x, v.y, v.z, w.x, w.y, w.z);
   }
-
-  /// @brief Turns a matrix into its transpose.
-  /// @param m The Matrix3 to transpose.
 
   /// @brief Returns the transpose of this matrix.
   /// @return The transpose of this matrix as a new Matrix3.
@@ -64,14 +81,22 @@ namespace Math3D {
   /// @brief Overload for the parenthesis operator.
   float& Matrix3::operator()(int row, int col)
   {
-    // TODO: Throw if either row or col is out of bounds.
+    if (row < 0.0f || row > dim || col < 0.0f || col > dim)
+    {
+      throw std::out_of_range("Index out of range.");
+    }
+
     return m[dim * row + col];
   }
 
   /// @brief Overload for the parenthesis operator.
   const float& Matrix3::operator()(int row, int col) const
   {
-    // TODO: Throw if either row or col is out of bounds.
+    if (row < 0.0f || row > dim || col < 0.0f || col > dim)
+    {
+      throw std::out_of_range("Index out of range.");
+    }
+
     return m[dim * row + col];
   }
 

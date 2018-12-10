@@ -12,6 +12,11 @@ namespace Math3D {
 
   /// @class Matrix3
   /// @brief The Matrix3 class declaration.
+  ///
+  /// Matrices represent coordinate system transformations; they are used to
+  /// describe how a vector, point, line, plane, or even another transformation
+  /// can be moved from one coordinate system with its own origin and set of
+  /// axes to a different one.
   class Matrix3 : public MathObject {
 
   private:
@@ -30,11 +35,13 @@ namespace Math3D {
     /// @param m The Matrix3 to transpose.
     static Matrix3& transpose(Matrix3& m)
     {
+      float temp;
+
       for (int i = 0; i < dim - 1; ++i)
       {
         for (int j = i + 1; j < dim; ++j)
         {
-          float temp = m(i, j);
+          temp = m(i, j);
           m(i, j) = m(j, i);
           m(j, i) = temp;
         }

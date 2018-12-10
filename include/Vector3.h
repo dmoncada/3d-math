@@ -11,7 +11,7 @@ namespace Math3D {
 
   /// @class Vector3
   /// @brief The Vector3 class declaration.
-  //
+  ///
   /// Basic mathematical building block used almost ubiquitously in game
   /// development. Used to describe such concepts as points in space and
   /// coordinate transforms.
