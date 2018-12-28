@@ -1,40 +1,30 @@
 # The Makefile used for building the 3D math library.
 # Author: David Moncada
 
-CXX            := clang++
+CXX           ?= clang++
 
-# Where to find the source code.
-SRC_DIR        := src
+SRC_DIR       := src
+OBJ_DIR       := bin
+LIB_DIR       := lib
 
-# Where to place the compiled code.
-OBJ_DIR        := obj
+SRC           := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ           := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.cpp=.o))
+LIB           := $(LIB_DIR)/lib3d-math.a
 
-# Build the list of object files to compile.
-_OBJS          := $(subst .cpp,.o,$(wildcard $(SRC_DIR)/*.cpp))
-OBJS           := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(_OBJS))
+TESTS         := tests
 
-TESTS          := tests
+TESTS_SRC_DIR := test/src
+TESTS_OBJ_DIR := test/bin
 
-# Where to find the source test code.
-TESTS_SRC_DIR  := test/src
+TESTS_SRC     := $(wildcard $(TESTS_SRC_DIR)/*.cpp)
+TESTS_OBJ     := $(patsubst $(TESTS_SRC_DIR)/%,$(TESTS_OBJ_DIR)/%,$(TESTS_SRC:.cpp=.o))
 
-# Where to place the compiled test code.
-TESTS_OBJS_DIR := test/obj
+DOC_DIR       := doc
 
-# Build the list of object test files to compile.
-_TESTS_OBJS    := $(subst .cpp,.o,$(wildcard $(TESTS_SRC_DIR)/*.cpp))
-TESTS_OBJS     := $(patsubst $(TESTS_SRC_DIR)/%,$(TESTS_OBJS_DIR)/%,$(_TESTS_OBJS))
+CXXFLAGS      += -Wall -Wextra -Werror -std=c++11 -Iinclude
+LDFLAGS       += -lgtest -Llib -l3d-math
 
-# Where to place the documentation.
-DOC_DIR        := doc
-
-# Flags passed to the C++ compiler.
-CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -Iinclude
-
-# Flags passed to the linker.
-LDFLAGS  += -lgtest
-
-.PHONY: all clean doc help tags test
+.PHONY: all clean doc help lib tags test
 
 # #######
 # Targets
@@ -43,7 +33,7 @@ LDFLAGS  += -lgtest
 all: doc tags test
 
 clean:
-	@rm -fr $(DOC_DIR) $(OBJ_DIR) $(TESTS_OBJS_DIR) tags $(TESTS)
+	@rm -fr $(OBJ_DIR) $(LIB_DIR) $(TESTS_OBJ_DIR) $(TESTS) $(DOC_DIR) tags
 
 doc:
 	@doxygen Doxyfile
@@ -55,33 +45,33 @@ help:
 	@echo ' clean    - Removes all generated files.'
 	@echo ' *doc     - Builds the documentation.'
 	@echo ' help     - Show this help message.'
+	@echo ' *lib     - Builds the statically-linked library.'
 	@echo ' *tags    - Builds tags for vim.'
 	@echo ' *test    - Builds the test suite.'
 	@echo ' print-%  - Prints the value of variable %.'
 
+lib: $(LIB)
+
 tags:
-	find include -type f -and -iname '*.h' | xargs ctags
-	find src -type f -and -iname '*.cpp' | xargs ctags -a
+	@find include -type f -and -iname '*.h' | xargs ctags
+	@find $(SRC_DIR) -type f -and -iname '*.cpp' | xargs ctags -a
 
 test: $(TESTS)
 
-# The following rule will build and run the test suite after building every
-# required .o file.
-
-$(TESTS): $(OBJS) $(TESTS_OBJS)
-	$(CXX) $(CPPFLAGS) $(OBJS) $(TESTS_OBJS) $(LDFLAGS) -o $@
+$(TESTS): $(LIB) $(TESTS_OBJ)
+	$(CXX) $(CPPFLAGS) $(TESTS_OBJ) $(LDFLAGS) -o $@
 	./$@ # Execute the test suite.
 
-# The following two rules will build every .o file that is to be placed in
-# OBJ_DIR from its corresponding .cpp file living in SRC_DIR. They will also
-# create OBJ_DIR if it doesn't exist.
+$(LIB): $(OBJ)
+	@mkdir -p $(LIB_DIR)
+	$(AR) rcs $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(TESTS_OBJS_DIR)/%.o: $(TESTS_SRC_DIR)/%.cpp
-	@mkdir -p $(TESTS_OBJS_DIR)
+$(TESTS_OBJ_DIR)/%.o: $(TESTS_SRC_DIR)/%.cpp
+	@mkdir -p $(TESTS_OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 print-%:

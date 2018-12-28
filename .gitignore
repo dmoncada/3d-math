@@ -1,13 +1,15 @@
 # Output files.
 *.o
+*.a
 *.so
 tags
 tests
 
 # Output directories.
 doc/
-obj/
-test/obj/
+bin/
+lib/
+test/bin/
 
 # OS-generated files.
 *.swp
