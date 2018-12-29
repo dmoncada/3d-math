@@ -6,19 +6,20 @@ namespace Math3D {
   /// @brief Copy constructor for Matrix3.
   Matrix3::Matrix3(const Matrix3& other)
   {
-    for (int i = 0; i < dim * dim; ++i)
-      this->m[i] = other.m[i];
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 3; ++j)
+        m[i][j] = other.m[i][j];
   }
 
   /// @brief Constructor for Matrix3.
   Matrix3::Matrix3(float m00, float m01, float m02,
                    float m10, float m11, float m12,
                    float m20, float m21, float m22)
-    : m { m00, m01, m02, m10, m11, m12, m20, m21, m22 } {}
+    : m { { m00, m01, m02 }, { m10, m11, m12 }, { m20, m21, m22 } } {}
 
   /// @brief Constructor for Matrix3.
   Matrix3::Matrix3(const Vector3& u, const Vector3& v, const Vector3& w)
-    : m { u.x, v.x, w.x, u.y, v.y, w.y, u.z, v.z, w.z } {}
+    : m { { u.x, v.x, w.x }, { u.y, v.y, w.y }, { u.z, v.z, w.z } } {}
 
   /// @brief The determinant of this matrix.
   ///
@@ -32,9 +33,9 @@ namespace Math3D {
   /// @return The determinant of this matrix.
   float Matrix3::determinant() const
   {
-    return (*this)(0, 0) * ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) +
-           (*this)(0, 1) * ((*this)(1, 2) * (*this)(2, 0) - (*this)(1, 0) * (*this)(2, 2)) +
-           (*this)(0, 2) * ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
+    return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) +
+           m[0][1] * (m[1][2] * m[2][0] - m[1][0] * m[2][2]) +
+           m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
   }
 
   /// @brief The inverse of this matrix.
@@ -81,35 +82,35 @@ namespace Math3D {
   /// @brief Overload for the parenthesis operator.
   float& Matrix3::operator()(int row, int col)
   {
-    if (row < 0.0f || row > dim || col < 0.0f || col > dim)
+    if (row < 0 || row > 3 || col < 0 || col > 3)
     {
       throw std::out_of_range("Index out of range.");
     }
 
-    return m[dim * row + col];
+    return m[row][col];
   }
 
   /// @brief Overload for the parenthesis operator.
   const float& Matrix3::operator()(int row, int col) const
   {
-    if (row < 0.0f || row > dim || col < 0.0f || col > dim)
+    if (row < 0 || row > 3 || col < 0 || col > 3)
     {
       throw std::out_of_range("Index out of range.");
     }
 
-    return m[dim * row + col];
+    return m[row][col];
   }
 
   /// @brief Overload for the brackets operator.
   Vector3 Matrix3::operator[](int col)
   {
-    return Vector3((*this)(0, col), (*this)(1, col), (*this)(2, col));
+    return Vector3(m[0][col], m[1][col], m[2][col]);
   }
 
   /// @brief Overload for the brackets operator.
   const Vector3 Matrix3::operator[](int col) const
   {
-    return Vector3((*this)(0, col), (*this)(1, col), (*this)(2, col));
+    return Vector3(m[0][col], m[1][col], m[2][col]);
   }
 
   /// @brief Overload for the addition operator.
@@ -128,15 +129,15 @@ namespace Math3D {
   Matrix3 Matrix3::operator*(const Matrix3& other) const
   {
     return Matrix3(
-      (*this)(0, 0) * other(0, 0) + (*this)(0, 1) * other(1, 0) + (*this)(0, 2) * other(2, 0),
-      (*this)(0, 0) * other(0, 1) + (*this)(0, 1) * other(1, 1) + (*this)(0, 2) * other(2, 1),
-      (*this)(0, 0) * other(0, 2) + (*this)(0, 1) * other(1, 2) + (*this)(0, 2) * other(2, 2),
-      (*this)(1, 0) * other(0, 0) + (*this)(1, 1) * other(1, 0) + (*this)(1, 2) * other(2, 0),
-      (*this)(1, 0) * other(0, 1) + (*this)(1, 1) * other(1, 1) + (*this)(1, 2) * other(2, 1),
-      (*this)(1, 0) * other(0, 2) + (*this)(1, 1) * other(1, 2) + (*this)(1, 2) * other(2, 2),
-      (*this)(2, 0) * other(0, 0) + (*this)(2, 1) * other(1, 0) + (*this)(2, 2) * other(2, 0),
-      (*this)(2, 0) * other(0, 1) + (*this)(2, 1) * other(1, 1) + (*this)(2, 2) * other(2, 1),
-      (*this)(2, 0) * other(0, 2) + (*this)(2, 1) * other(1, 2) + (*this)(2, 2) * other(2, 2)
+      m[0][0] * other.m[0][0] + m[0][1] * other.m[1][0] + m[0][2] * other.m[2][0],
+      m[0][0] * other.m[0][1] + m[0][1] * other.m[1][1] + m[0][2] * other.m[2][1],
+      m[0][0] * other.m[0][2] + m[0][1] * other.m[1][2] + m[0][2] * other.m[2][2],
+      m[1][0] * other.m[0][0] + m[1][1] * other.m[1][0] + m[1][2] * other.m[2][0],
+      m[1][0] * other.m[0][1] + m[1][1] * other.m[1][1] + m[1][2] * other.m[2][1],
+      m[1][0] * other.m[0][2] + m[1][1] * other.m[1][2] + m[1][2] * other.m[2][2],
+      m[2][0] * other.m[0][0] + m[2][1] * other.m[1][0] + m[2][2] * other.m[2][0],
+      m[2][0] * other.m[0][1] + m[2][1] * other.m[1][1] + m[2][2] * other.m[2][1],
+      m[2][0] * other.m[0][2] + m[2][1] * other.m[1][2] + m[2][2] * other.m[2][2]
     );
   }
 
@@ -144,17 +145,18 @@ namespace Math3D {
   Vector3 Matrix3::operator*(const Vector3& v) const
   {
     return Vector3(
-      (*this)(0, 0) * v.x + (*this)(0, 1) * v.y + (*this)(0, 2) * v.z,
-      (*this)(1, 0) * v.x + (*this)(1, 1) * v.y + (*this)(1, 2) * v.z,
-      (*this)(2, 0) * v.x + (*this)(2, 1) * v.y + (*this)(2, 2) * v.z
+      m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
+      m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
+      m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z
     );
   }
 
   /// @brief Overload for the addition-assignment operator.
   Matrix3& Matrix3::operator+=(const Matrix3& other)
   {
-    for (int i = 0; i < dim * dim; ++i)
-      this->m[i] += other.m[i];
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 3; ++j)
+        m[i][j] += other.m[i][j];
 
     return *this;
   }
@@ -162,8 +164,9 @@ namespace Math3D {
   /// @brief Overload for the subtraction-assignment operator.
   Matrix3& Matrix3::operator-=(const Matrix3& other)
   {
-    for (int i = 0; i < dim * dim; ++i)
-      this->m[i] -= other.m[i];
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 3; ++j)
+        m[i][j] -= other.m[i][j];
 
     return *this;
   }
@@ -172,8 +175,9 @@ namespace Math3D {
   Matrix3& Matrix3::operator=(const Matrix3& other)
   {
     if (this != &other)
-      for (int i = 0; i < dim * dim; ++i)
-        this->m[i] = other.m[i];
+      for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+          m[i][j] = other.m[i][j];
 
     return *this;
   }
@@ -181,9 +185,9 @@ namespace Math3D {
   /// @brief Overload for the equality comparison operator.
   bool Matrix3::operator==(const Matrix3& other) const
   {
-    for (int row = 0; row < dim; ++row)
-      for (int col = 0; col < dim; ++col)
-        if (!is_almost_equal((*this)(row, col), other(row, col)))
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 3; ++j)
+        if (!is_almost_equal(m[i][j], other.m[i][j]))
           return false;
 
     return true;
@@ -192,12 +196,12 @@ namespace Math3D {
   /// @brief Overload for the to_string() member function in the base class.
   std::ostream& Matrix3::to_string(std::ostream& os) const
   {
-    for (int row = 0; row < dim; ++row)
+    for (int i = 0; i < 3; ++i)
     {
       os << '|';
 
-      for (int col = 0; col < dim; ++col)
-        os << ' ' << std::fixed << std::setw(3) << (*this)(row, col);
+      for (int j = 0; j < 3; ++j)
+        os << ' ' << std::fixed << std::setw(3) << m[i][j];
 
       os << " |" << std::endl;
     }

@@ -20,8 +20,7 @@ namespace Math3D {
   class Matrix3 : public MathObject {
 
   private:
-    static const int dim = 3;
-    float m[dim * dim] {};
+    float m[3][3];
 
   public:
     /// @brief Returns the identity matrix.
@@ -32,22 +31,14 @@ namespace Math3D {
     }
 
     /// @brief Transposes a matrix.
-    /// @param m The Matrix3 to transpose.
-    static Matrix3& transpose(Matrix3& m)
+    /// @param mat The Matrix3 to transpose.
+    static Matrix3& transpose(Matrix3& mat)
     {
-      float temp;
+      for (int i = 0; i < 3 - 1; ++i)
+        for (int j = i + 1; j < 3; ++j)
+          std::swap(mat.m[i][j], mat.m[j][i]);
 
-      for (int i = 0; i < dim - 1; ++i)
-      {
-        for (int j = i + 1; j < dim; ++j)
-        {
-          temp = m(i, j);
-          m(i, j) = m(j, i);
-          m(j, i) = temp;
-        }
-      }
-
-      return m;
+      return mat;
     }
 
     // Constructors.
