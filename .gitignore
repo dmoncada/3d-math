@@ -6,10 +6,10 @@ tags
 tests
 
 # Output directories.
-doc/
 bin/
+doc/
 lib/
-test/bin/
+*build*
 
 # OS-generated files.
 *.swp
