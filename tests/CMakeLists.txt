@@ -1,5 +1,5 @@
 # Bring the sources for the tests into the project.
-file(GLOB TEST_SOURCES "src/*.cpp")
+file(GLOB TEST_SOURCES "*.cpp")
 
 # Generate the tests executable from the sources.
 add_executable(tests ${TEST_SOURCES})

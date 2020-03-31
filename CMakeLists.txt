@@ -37,4 +37,4 @@ include_directories(include)
 add_subdirectory(src)
 
 # This will launch the CMakeLists.txt files in the ./tests directories.
-add_subdirectory(test)
+add_subdirectory(tests)
