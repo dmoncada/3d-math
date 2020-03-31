@@ -33,8 +33,8 @@ FetchContent_MakeAvailable(googletest)
 # Make the headers available to the rest of the project.
 include_directories(include)
 
-# This will launch the CMakeLists.txt files in the ./src directories.
+# This will launch the CMakeLists.txt file in the ./src directory.
 add_subdirectory(src)
 
-# This will launch the CMakeLists.txt files in the ./tests directories.
+# This will launch the CMakeLists.txt file in the ./tests directory.
 add_subdirectory(tests)

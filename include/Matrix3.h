@@ -78,5 +78,8 @@ namespace Math3D {
 
     // to_string() overload.
     std::ostream& to_string(std::ostream& os) const override;
+
+  private:
+    bool is_in_range(int index) const;
   };
 }

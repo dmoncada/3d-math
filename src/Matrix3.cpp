@@ -82,23 +82,23 @@ namespace Math3D {
   /// @brief Overload for the parenthesis operator.
   float& Matrix3::operator()(int row, int col)
   {
-    if (row < 0 || row > 3 || col < 0 || col > 3)
+    if (is_in_range(row) && is_in_range(col))
     {
-      throw std::out_of_range("Index out of range.");
+      return m[row][col];
     }
 
-    return m[row][col];
+    throw std::out_of_range("Index out of range.");
   }
 
   /// @brief Overload for the parenthesis operator.
   const float& Matrix3::operator()(int row, int col) const
   {
-    if (row < 0 || row > 3 || col < 0 || col > 3)
+    if (is_in_range(row) && is_in_range(col))
     {
-      throw std::out_of_range("Index out of range.");
+      return m[row][col];
     }
 
-    return m[row][col];
+    throw std::out_of_range("Index out of range.");
   }
 
   /// @brief Overload for the brackets operator.
@@ -207,5 +207,11 @@ namespace Math3D {
     }
 
     return os;
+  }
+
+  // Determines if the given index is within range.
+  bool Matrix3::is_in_range(int index) const
+  {
+      return 0 <= index && index < 3;
   }
 }
