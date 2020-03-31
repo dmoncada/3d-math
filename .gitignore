@@ -1,14 +1,37 @@
-# Output files.
+# Prerequisites.
+*.d
+
+# Compiled object files.
+*.slo
+*.lo
 *.o
-*.a
+*.obj
+
+# Precompiled headers.
+*.gch
+*.pch
+
+# Compiled dynamic libraries.
 *.so
-tags
-tests
+*.dylib
+*.dll
+
+# Fortran module files.
+*.mod
+*.smod
+
+# Compiled static libraries.
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables.
+*.exe
+*.out
+*.app
 
 # Output directories.
-bin/
-doc/
-lib/
 *build*
 
 # OS-generated files.
