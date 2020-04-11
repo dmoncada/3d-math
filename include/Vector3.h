@@ -18,7 +18,26 @@ namespace Math3D
     class Vector3 : public MathObject
     {
     public:
-        float x, y, z;
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+
+        /// @brief Shorthand for Vector3(0, 0, 0).
+        static const Vector3 zero;
+        /// @brief Shorthand for Vector3(1, 1, 1).
+        static const Vector3 one;
+        /// @brief Shorthand for Vector3(1, 0, 0).
+        static const Vector3 right;
+        /// @brief Shorthand for Vector3(0, 1, 0).
+        static const Vector3 up;
+        /// @brief Shorthand for Vector3(0, 0, 1).
+        static const Vector3 forward;
+        /// @brief Shorthand for Vector3(-1, 0, 0).
+        static const Vector3 left;
+        /// @brief Shorthand for Vector3(0, -1, 0).
+        static const Vector3 down;
+        /// @brief Shorthand for Vector3(0, 0, -1).
+        static const Vector3 back;
 
         /// @brief Computes the angle between two vectors.
         /// @return The angle between the inputs in degrees, which is in the range
@@ -50,10 +69,10 @@ namespace Math3D
             );
         }
 
-        /// @brief Computes the distance between two vectors.
+        /// @brief Computes the distance between two points.
         /// @param v The first Vector3.
         /// @param w The second Vector3.
-        /// @return The distance between the inputs.
+        /// @return The distance between the given points.
         static float distance(const Vector3& v, const Vector3& w)
         {
             return (v - w).magnitude();
@@ -78,6 +97,19 @@ namespace Math3D
             return v.x * w.x + v.y * w.y + v.z * w.z;
         }
 
+        /// @brief Linearly interpolates between two points.
+        /// @param v The first Vector3.
+        /// @param w The second Vector3.
+        /// @param t The interpolant parameter, clamped to [0,1].
+        /// @return The fraction of the way along a line between the given points.
+        static Vector3 lerp(const Vector3& v, const Vector3& w, float t)
+        {
+            // Clamp t to [0,1]
+            t = std::fmax(t, 0.0f);
+            t = std::fmin(t, 1.0f);
+            return v + (w - v) * t;
+        }
+
         /// @brief Turns an arbitrary vector into a unit vector.
         /// @param v The Vector3 to normalize.
         static Vector3& normalize(Vector3& v)
@@ -100,11 +132,11 @@ namespace Math3D
             return v - project(v, w);
         }
 
-        /// @brief Returns the zero vector.
-        /// @return A Vector3 whose every component is zero.
-        static Vector3 zero()
+        /// @brief Multiplies two vectors component-wise.
+        /// @return The result of scaling vector v by vector w.
+        static Vector3 scale(const Vector3& v, const Vector3& w)
         {
-            return Vector3(0.0f, 0.0f, 0.0f);
+            return Vector3(v.x * w.x, v.y * w.y, v.z * w.z);
         }
 
         // Constructors.
@@ -115,6 +147,7 @@ namespace Math3D
         // Member functions.
         float magnitude() const;
         Vector3 normalized() const;
+        void scale(const Vector3&);
         float sqr_magnitude() const;
 
         // Arithmetic operators overloads.

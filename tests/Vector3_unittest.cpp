@@ -20,7 +20,7 @@ namespace Math3D
             v = Vector3(1.0f, 2.0f, 3.0f);
             w = Vector3(2.0f, 4.0f, 6.0f); // Parallel to the above.
 
-            EXPECT_EQ(Vector3::cross(v, w), Vector3::zero())
+            EXPECT_EQ(Vector3::cross(v, w), Vector3::zero)
                 << "The cross product of two parallel vectors should be a zero vector.";
         }
 

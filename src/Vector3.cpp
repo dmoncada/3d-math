@@ -3,6 +3,23 @@
 /// @namespace Math3D
 namespace Math3D
 {
+    /// @brief Shorthand for Vector3(0, 0, 0).
+    const Vector3 Vector3::zero = Vector3(0.0f, 0.0f, 0.0f);
+    /// @brief Shorthand for Vector3(1, 1, 1).
+    const Vector3 Vector3::one = Vector3(1.0f, 1.0f, 1.0f);
+    /// @brief Shorthand for Vector3(1, 0, 0).
+    const Vector3 Vector3::right = Vector3(1.0f, 0.0f, 0.0f);
+    /// @brief Shorthand for Vector3(0, 1, 0).
+    const Vector3 Vector3::up = Vector3(0.0f, 1.0f, 0.0f);
+    /// @brief Shorthand for Vector3(0, 0, 1).
+    const Vector3 Vector3::forward = Vector3(0.0f, 0.0f, 1.0f);
+    /// @brief Shorthand for Vector3(-1, 0, 0).
+    const Vector3 Vector3::left = Vector3(-1.0f, 0.0f, 0.0f);
+    /// @brief Shorthand for Vector3(0, -1, 0).
+    const Vector3 Vector3::down = Vector3(0.0f, -1.0f, 0.0f);
+    /// @brief Shorthand for Vector3(0, 0, -1).
+    const Vector3 Vector3::back = Vector3(0.0f, 0.0f, -1.0f);
+
     /// @brief Copy constructor for Vector3.
     Vector3::Vector3(const Vector3& v) : Vector3(v.x, v.y, v.z) {}
 
@@ -24,6 +41,16 @@ namespace Math3D
         Vector3 v = *this;
         Vector3::normalize(v);
         return v;
+    }
+
+    /// @brief Multiplies every component of this vector by the same component of
+    /// scale.
+    /// @return The result of scaling this vector by the given vector.
+    void Vector3::scale(const Vector3& scale)
+    {
+        x *= scale.x;
+        y *= scale.y;
+        z *= scale.z;
     }
 
     /// @brief The squared magnitude of this vector.
